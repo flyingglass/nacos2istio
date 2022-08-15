@@ -62,7 +62,5 @@ spec:
           image: aeraki/nacos2istio:d3a6a5b4146f51690d4a399bceb8f2535fb4dc54
           imagePullPolicy: Never
           env:
-            - name: REGISTRY_ADDR
-              value: "zookeeper:2181"
-            - name: REGISTRY_TYPE
-              value: "zookeeper"
+            - name: NACOS_ADDR
+              value: "nacos:8848"
