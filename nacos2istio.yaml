@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nacos2istio
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: nacos2istio
+  name: nacos2istio
+rules:
+  - apiGroups:
+      - networking.istio.io
+    resources:
+      - serviceentries
+      - workloadentries
+    verbs:
+      - get
+      - watch
+      - list
+      - update
+      - patch
+      - create
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: nacos2istio
+  name: nacos2istio
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nacos2istio
+subjects:
+  - kind: ServiceAccount
+    name: nacos2istio
+    namespace: meta-nacos
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos2istio
+  labels:
+    app: nacos2istio
+spec:
+  selector:
+    matchLabels:
+      app: nacos2istio
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nacos2istio
+    spec:
+      serviceAccountName: nacos2istio
+      containers:
+        - name: nacos2istio
+          image: aeraki/nacos2istio:d3a6a5b4146f51690d4a399bceb8f2535fb4dc54
+          imagePullPolicy: Never
+          env:
+            - name: REGISTRY_ADDR
+              value: "zookeeper:2181"
+            - name: REGISTRY_TYPE
+              value: "zookeeper"
