@@ -64,8 +64,7 @@ func (w *NamespaceWatcher) Run(stop <-chan struct{}) {
 				continue
 			}
 			for _, catalogService := range catalogServiceList.ServiceList {
-				if catalogService.Name == "mdd-api" &&
-					!w.subscribedServices[catalogService.Name+catalogService.GroupName] {
+				if !w.subscribedServices[catalogService.Name+catalogService.GroupName] {
 					err := w.nacosClient.Subscribe(&vo.SubscribeParam{
 						ServiceName: catalogService.Name,
 						GroupName:   catalogService.GroupName,

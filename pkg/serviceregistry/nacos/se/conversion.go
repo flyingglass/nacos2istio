@@ -52,17 +52,9 @@ func ConvertServiceEntry(instances []common.NacosServiceInstance) map[string]*v1
 			serviceEntry = constructServiceEntry(instance)
 			serviceEntries[host] = serviceEntry
 		}
-		// todo 此处变动会导致重复
 		serviceEntry.Spec.Endpoints = append(serviceEntry.Spec.Endpoints,
 			constructWorkloadEntry(instance.Ip, serviceAccount, instance.Port, locality, labels))
 	}
-
-	log.Infof("========== Conversion Begin ============")
-	log.Infof("instances: \n%v", instances)
-	for host, entry := range serviceEntries {
-		log.Infof("===>\nhost=%s, Endpoints=%v", host, entry.Spec.Endpoints)
-	}
-	log.Infof("========== Conversion End ============")
 
 	return serviceEntries
 
