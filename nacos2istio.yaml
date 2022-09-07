@@ -15,7 +15,6 @@ rules:
       - networking.istio.io
     resources:
       - serviceentries
-      - workloadentries
     verbs:
       - get
       - watch

@@ -13,13 +13,13 @@ import (
 )
 
 type Controller struct {
-	mutex sync.Mutex
-	nc               naming_client.INamingClient
+	mutex         sync.Mutex
+	nc            naming_client.INamingClient
 	ncAddr        string
 	ncNeedWatchNS map[string]bool
 	ncWatchedNS   map[string]bool
-	ic               *istioclient.Clientset
-	eventChan        chan []common.NacosServiceInstance
+	ic            *istioclient.Clientset
+	eventChan     chan []common.NacosServiceInstance
 }
 
 func NewController(ncAddr string, ncWatchNs string) (*Controller, error) {
@@ -109,9 +109,9 @@ func getIstioClient() (*istioclient.Clientset, error) {
 }
 
 func convertNeedWatchedNS(ns string) map[string]bool {
-	NeedWatchNS := make(map[string]bool)
+	needWatchNS := make(map[string]bool)
 	for _, s := range strings.Split(ns, ",") {
-		NeedWatchNS[s] = true
+		needWatchNS[s] = true
 	}
-	return NeedWatchNS
+	return needWatchNS
 }
